@@ -66,6 +66,9 @@ parser.add_argument("--enable-console-prompts", action='store_true', help="print
 
 cmd_opts = parser.parse_args()
 
+cmd_opts.disable_opt_split_attention = True
+cmd_opts.no_half = True
+
 devices.device, devices.device_gfpgan, devices.device_bsrgan, devices.device_esrgan, devices.device_scunet, devices.device_codeformer = \
 (devices.cpu if x in cmd_opts.use_cpu else devices.get_optimal_device() for x in ['SD', 'GFPGAN', 'BSRGAN', 'ESRGAN', 'SCUNet', 'CodeFormer'])
 
