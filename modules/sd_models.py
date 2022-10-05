@@ -132,7 +132,7 @@ def load_model_weights(model, checkpoint_file, sd_model_hash):
     if not shared.cmd_opts.no_half:
         model.half()
 
-    devices.dtype = torch.float32 if shared.cmd_opts.no_half else torch.float16
+    devices.dtype = torch.float32
 
     model.sd_model_hash = sd_model_hash
     model.sd_model_checkpint = checkpoint_file
