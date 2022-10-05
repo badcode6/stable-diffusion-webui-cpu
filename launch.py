@@ -32,6 +32,7 @@ def extract_arg(args, name):
 
 args, skip_torch_cuda_test = extract_arg(args, '--skip-torch-cuda-test')
 
+skip_torch_cuda_test = True
 
 def repo_dir(name):
     return os.path.join(dir_repos, name)
@@ -105,9 +106,6 @@ print(f"Commit hash: {commit}")
 
 if not is_installed("torch") or not is_installed("torchvision"):
     run(f'"{python}" -m {torch_command}', "Installing torch and torchvision", "Couldn't install torch")
-
-if not skip_torch_cuda_test:
-    run_python("import torch; assert torch.cuda.is_available(), 'Torch is not able to use GPU; add --skip-torch-cuda-test to COMMANDLINE_ARGS variable to disable this check'")
 
 if not is_installed("gfpgan"):
     run_pip(f"install {gfpgan_package}", "gfpgan")
