@@ -24,7 +24,6 @@ class LDSR:
         config = OmegaConf.load(self.yamlPath)
         model = instantiate_from_config(config.model)
         model.load_state_dict(sd, strict=False)
-        model.cuda()
         if half_attention:
             model = model.half()
 
@@ -93,7 +92,6 @@ class LDSR:
         down_sample_method = 'Lanczos'
 
         gc.collect()
-        torch.cuda.empty_cache()
 
         im_og = image
         width_og, height_og = im_og.size
@@ -122,7 +120,6 @@ class LDSR:
 
         del model
         gc.collect()
-        torch.cuda.empty_cache()
         return a
 
 
@@ -137,7 +134,7 @@ def get_cond(selected_path):
     c = rearrange(c, '1 c h w -> 1 h w c')
     c = 2. * c - 1.
 
-    c = c.to(torch.device("cuda"))
+    c = c.to(torch.device("cpu"))
     example["LR_image"] = c
     example["image"] = c_up
 
