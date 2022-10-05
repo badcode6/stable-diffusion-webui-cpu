@@ -264,12 +264,12 @@ class FrozenCLIPEmbedderWithCustomWords(torch.nn.Module):
         if len(used_custom_terms) > 0:
             self.hijack.comments.append("Used embeddings: " + ", ".join([f'{word} [{checksum}]' for word, checksum in used_custom_terms]))
 
-        tokens = torch.asarray(remade_batch_tokens).to(device)
+        tokens = torch.Tensor(remade_batch_tokens).int()
         outputs = self.wrapped.transformer(input_ids=tokens)
         z = outputs.last_hidden_state
 
         # restoring original mean is likely not correct, but it seems to work well to prevent artifacts that happen otherwise
-        batch_multipliers = torch.asarray(batch_multipliers).to(device)
+        batch_multipliers = torch.Tensor(batch_multipliers).int()
         original_mean = z.mean()
         z *= batch_multipliers.reshape(batch_multipliers.shape + (1,)).expand(z.shape)
         new_mean = z.mean()
