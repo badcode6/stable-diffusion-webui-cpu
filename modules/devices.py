@@ -11,8 +11,7 @@ cpu = torch.device("cpu")
 
 
 def get_optimal_device():
-    if torch.cuda.is_available():
-        return torch.device("cuda")
+    return torch.device("cpu")
 
     if has_mps:
         return torch.device("mps")
@@ -21,9 +20,7 @@ def get_optimal_device():
 
 
 def torch_gc():
-    if torch.cuda.is_available():
-        torch.cuda.empty_cache()
-        torch.cuda.ipc_collect()
+    return
 
 
 def enable_tf32():
@@ -35,7 +32,7 @@ def enable_tf32():
 errors.run(enable_tf32, "Enabling TF32")
 
 device = device_gfpgan = device_bsrgan = device_esrgan = device_scunet = device_codeformer = get_optimal_device()
-dtype = torch.float16
+dtype = torch.float32
 
 def randn(seed, shape):
     # Pytorch currently doesn't handle setting randomness correctly when the metal backend is used.
@@ -65,4 +62,4 @@ def autocast():
     if dtype == torch.float32 or shared.cmd_opts.precision == "full":
         return contextlib.nullcontext()
 
-    return torch.autocast("cuda")
+    return torch.autocast("cpu")
