@@ -26,7 +26,7 @@ class MemUsageMonitor(threading.Thread):
             torch.cuda.mem_get_info()
             torch.cuda.memory_stats(self.device)
         except Exception as e:  # AMD or whatever
-            print(f"Warning: caught exception '{e}', memory monitor disabled")
+            print(f"Warning: caught exception '{e}', memory monitor disabled. this is good if youre trying to use CPU")
             self.disabled = True
 
     def run(self):
